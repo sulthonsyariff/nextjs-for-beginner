@@ -4,21 +4,21 @@ import Metadata from '../../comps/Metadata';
 
 export const getStaticProps = async () => {
   const res = await fetch('https://jsonplaceholder.typicode.com/users');
-  const data = await res.json();
+  const dataUsers = await res.json();
 
   return {
-    props: { ninjas: data }
+    props: { dataUsers }
   }
 }
 
-const Ninjas = ({ ninjas }) => {
+const Users = ({ dataUsers }) => {
   return (
-    <Metadata title="Listing">
-      <h1>All Ninjas</h1>
-      {ninjas.map(ninja => (
-        <Link href={'/ninjas/' + ninja.id} key={ninja.id}>
+    <Metadata title="Users">
+      <h1>Data Users</h1>
+      {dataUsers.map(user => (
+        <Link href={'/users/' + user.id} key={user.id}>
           <a className={styles.single}>
-            <h3>{ ninja.name }</h3>
+            <h3>{ user.name }</h3>
           </a>
         </Link>
       ))}
@@ -26,4 +26,4 @@ const Ninjas = ({ ninjas }) => {
   );
 }
  
-export default Ninjas;
+export default Users;
