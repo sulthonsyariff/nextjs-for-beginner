@@ -1,5 +1,6 @@
 import styles from '../../styles/Ninjas.module.css'
 import Link from 'next/link'
+import Metadata from '../../comps/Metadata';
 
 export const getStaticProps = async () => {
   const res = await fetch('https://jsonplaceholder.typicode.com/users');
@@ -11,10 +12,8 @@ export const getStaticProps = async () => {
 }
 
 const Ninjas = ({ ninjas }) => {
-  // console.log(ninjas)
-
   return (
-    <div>
+    <Metadata title="Listing">
       <h1>All Ninjas</h1>
       {ninjas.map(ninja => (
         <Link href={'/ninjas/' + ninja.id} key={ninja.id}>
@@ -23,7 +22,7 @@ const Ninjas = ({ ninjas }) => {
           </a>
         </Link>
       ))}
-    </div>
+    </Metadata>
   );
 }
  
