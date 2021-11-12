@@ -8,3 +8,7 @@
 .blog:hover {
   border-left: 8px solid #ff4949;
 }
+.text-center {
+  text-align: center;
+  margin: 10px auto;
+}

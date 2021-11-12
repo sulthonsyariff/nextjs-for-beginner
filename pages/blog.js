@@ -1,22 +1,49 @@
 import styles from '../styles/Blog.module.css'
 import Metadata from '../comps/Metadata'
+import { useState, useEffect } from 'react'
 
 export const getServerSideProps = async () => {
-  const res = await fetch('https://jsonplaceholder.typicode.com/posts');
-  const dataBlog = await res.json();
+  const res = await fetch('https://jsonplaceholder.typicode.com/posts?_start=0&_limit=10');
+  const initialBlogs = await res.json();
 
   return {
     props: {
-      dataBlog
+      initialBlogs
     }
   }
 }
 
-const Blog = ({ dataBlog }) => {
+const Blog = ({ initialBlogs }) => {
+  const [blogs, setBlogs] = useState(initialBlogs);
+  const [loading, setLoading] = useState(false);
+
+  const fetchMoreBlogs = async () => {
+    setLoading(true);
+    const start = blogs.length + 10;
+
+    const res = await fetch(`https://jsonplaceholder.typicode.com/posts?_start=${start}&_limit=10`);
+    const newBlogs = await res.json();
+    
+    setBlogs([...blogs, ...newBlogs]);
+
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    const scrollingFunction = () => {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight-10) {
+            fetchMoreBlogs();
+            window.removeEventListener('scroll', scrollingFunction)
+        }
+    }
+    
+    window.addEventListener('scroll', scrollingFunction);
+  }, [blogs]);
+
   return (
     <Metadata title="Blog SSR">
       <h1>Data Blog</h1>
-      {dataBlog.map(blog => {
+      {blogs.map(blog => {
         return (
           <div className={styles.blog} key={blog.id}>
             <h3>{blog.title}</h3>
@@ -24,6 +51,7 @@ const Blog = ({ dataBlog }) => {
           </div>
         )
       })}
+      { loading && <div className={styles['text-center']}>Loading...</div> }
     </Metadata>
   );
 }
