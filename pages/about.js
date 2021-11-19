@@ -1,4 +1,4 @@
-import Metadata from "../comps/Metadata";
+import Metadata from "../components/Metadata";
 
 const About = () => {
   return (

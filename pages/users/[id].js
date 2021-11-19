@@ -1,4 +1,4 @@
-import Metadata from "../../comps/Metadata";
+import Metadata from "../../components/Metadata";
 
 export const getStaticPaths = async () => {
   const res = await fetch('https://jsonplaceholder.typicode.com/users');

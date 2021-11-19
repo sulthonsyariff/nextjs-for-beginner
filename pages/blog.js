@@ -1,7 +1,8 @@
 import styles from '../styles/Blog.module.css'
-import Metadata from '../comps/Metadata'
+import Metadata from '../components/Metadata'
 import { useState, useEffect } from 'react'
 
+// initial blogs dari SSR supaya kita dapet 10 data awal
 export const getServerSideProps = async () => {
   const res = await fetch('https://jsonplaceholder.typicode.com/posts?_start=0&_limit=10');
   const initialBlogs = await res.json();
@@ -16,7 +17,8 @@ export const getServerSideProps = async () => {
 const Blog = ({ initialBlogs }) => {
   const [blogs, setBlogs] = useState(initialBlogs);
   const [loading, setLoading] = useState(false);
-
+  
+  // func fetch more blogs data
   const fetchMoreBlogs = async () => {
     setLoading(true);
     const start = blogs.length + 10;
@@ -29,6 +31,7 @@ const Blog = ({ initialBlogs }) => {
     setLoading(false);
   }
 
+  // triggered ketika state blogs berubah dan scroll paling bawah
   useEffect(() => {
     const scrollingFunction = () => {
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight-10) {
